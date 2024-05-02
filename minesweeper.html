@@ -1,0 +1,52 @@
+<!-- <!DOCTYPE html>
+<html>
+<body>
+
+<h2>Minesweeper Game</h2>
+
+<form action="http://localhost:3000/submit" method="POST">
+    <h2>Please enter the difficulty (1 to 4): </h2><br>
+    1. Easy<br>
+    2. Medium<br>
+    3. Hard<br>
+    4. Custom<br>
+    <input type="text" name="option" value="">
+    <br>
+    <input type="submit" value="Submit">
+</form> 
+
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Minesweeper Game</h2>
+
+<form action="http://localhost:3000/submit" method="POST">
+    <h2>Please select the difficulty:</h2><br>
+    <input type="radio" name="option" value="1"> Easy<br>
+    <input type="radio" name="option" value="2"> Medium<br>
+    <input type="radio" name="option" value="3"> Hard<br>
+    <input type="radio" name="option" value="4" id="customOption"> Custom<br>
+    
+    <div id="customFields" style="display: none;">
+        <h2>Please enter custom values:</h2>
+        Rows: <input type="number" name="rows" id="rows"><br>
+        Columns: <input type="number" name="cols" id="cols"><br>
+        Density: <input type="number" name="density" id="density"><br>
+    </div>
+    
+    <br>
+    <input type="submit" value="Submit">
+</form> 
+
+<script>
+    document.getElementById("customOption").addEventListener("click", function() {
+        document.getElementById("customFields").style.display = "block";
+    });
+</script>
+
+</body>
+</html>
