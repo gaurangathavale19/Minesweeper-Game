@@ -1,6 +1,7 @@
 import System.Random
 import Text.Read
 import Data.List
+import Data.Typeable
 
 
 type Cell = Either Bool Int
@@ -48,9 +49,21 @@ printBoard board revealed = do
 checkWin :: Board -> Revealed -> Bool
 checkWin board revealed = all (== Revealed) [rev | (row, revRow) <- zip board revealed, (cell, rev) <- zip row revRow, cell /= Left True]
 
+isRight :: Either a b -> Bool
+isRight (Right _) = True
+isRight _        = False
+
 -- Function to get a list of unrevealed cells on the board
 unrevealedCells :: Board -> Revealed -> [[Int]]
 unrevealedCells board revealed = [[r, c] | r <- [0..length board - 1], c <- [0..length (board !! 0) - 1], revealed !! r !! c == Hidden]
+
+-- Function to get a list of unrevealed non-mine cells on the board
+unrevealedNonMineCells :: Board -> Revealed -> [[Int]]
+unrevealedNonMineCells board revealed = [[r, c] | r <- [0..length board - 1], c <- [0..length (board !! 0) - 1], revealed !! r !! c == Hidden, isRight (board !! r !! c)]
+
+-- Function to get a list of total non-mine cells on the board
+nonMineCells :: Board -> [[Int]]
+nonMineCells board = [[r, c] | r <- [0..length board - 1], c <- [0..length (board !! 0) - 1], isRight (board !! r !! c)]
 
 -- Function to randomly choose an unrevealed cell from the board
 randomUnrevealedCell board revealed = do
@@ -77,7 +90,13 @@ gameLoop board revealed = do
                 [Just r, Just c] -> case board !! r !! c of
                     Left _ -> do
                         putStrLn "Game Over! You revealed a mine."
+                        let total_cells = ((length board)*(length (board !! 0)))
+                        let total_non_mine_cells = length (nonMineCells board)
+                        let unrevealed_cells = total_non_mine_cells - (length (unrevealedNonMineCells board revealed))
+                        -- putStrLn ("unrevealed_cells: " ++ (show unrevealed_cells) ++ " total_non_mine_cells: " ++ (show total_non_mine_cells))
+                        let result = fromIntegral (unrevealed_cells) * 100 / fromIntegral (total_non_mine_cells)
                         printBoard board (map (map (const Revealed)) revealed)
+                        putStrLn ("Accuracy (revealed non-mine cells / total non-mine cells): " ++ (show result))
                     Right n -> if n == 0 then gameLoop board (revealCell board revealed (r, c)) else gameLoop board (revealCell board revealed (r, c))
                 _ -> do
                     putStrLn "Invalid input. Please enter two numbers."
