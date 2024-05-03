@@ -19,6 +19,14 @@ random, while the second solver should use a more sophisticated strategy.
 - Implement a “smart” solver. This solver should use a strategy to determine which cells to uncover or place flags. The strategy could be based on the numbers revealed in uncovered cells (which indicate how many adjacent cells contain mines), the positions of flagged cells, and/or other factors.
 
 ### How to execute ?
+
+- CLI version
+To compile, run the following command: <br>
+` ghc -o cli .\CLI-minesweeper.hs -package random ` <br>
+This will generate a cli.exe file. <br>
+The run the following command: ` ./cli.exe ` <br>
+
+- GUI Version
 To compile, run the following command: <br>
 ` ghc -o minesweeper .\minesweeper.hs -package text -package aeson -package random -package scotty ` <br>
 This will generate a minesweeper.exe file. <br>
